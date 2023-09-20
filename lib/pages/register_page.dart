@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:astro44/componets/my_textfield.dart';
 import 'package:astro44/componets/my_button.dart';
 import 'package:astro44/componets/square.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:astro44/servieces/auth_service.dart';
+import 'email_verification_page.dart';
+
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -14,29 +16,55 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  //text editing controllers
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-
   bool isLoading = false;
 
-  //sign user up method
   void signUserUp() async {
     setState(() {
       isLoading = true;
     });
 
     try {
-      // check if password is confirmed
       if (passwordController.text == confirmPasswordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        // Create the user with email and password
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         );
 
-        // Registration successful, show success message or navigate to the next screen
+        // Send email verification
+        await userCredential.user?.sendEmailVerification();
+
+        // Show success message or navigate to the next screen
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: Colors.deepPurple,
+              title: Center(
+                child: Text(
+                  'Registration Successful. Please check your email for verification.',
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  child: Text(
+                    'OK',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    // You can navigate to the next screen here if needed
+                  },
+                ),
+              ],
+            );
+          },
+        );
       } else {
         showErrorDialog("Passwords don't match!");
       }
@@ -60,43 +88,21 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.deepPurple,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: Colors.deepPurple,
+        title: Center(
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.white),
           ),
-        );
-      },
-    );
-  }
-
-  void signInWithGoogle() async {
-    try {
-      final GoogleSignIn googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleSignInAccount =
-          await googleSignIn.signIn();
-
-      if (googleSignInAccount != null) {
-        final GoogleSignInAuthentication googleSignInAuthentication =
-            await googleSignInAccount.authentication;
-
-        final AuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleSignInAuthentication.accessToken,
-          idToken: googleSignInAuthentication.idToken,
-        );
-
-        await FirebaseAuth.instance.signInWithCredential(credential);
-      }
-    } catch (e) {
-      showErrorDialog('An error occurred. Please try again later.');
-    }
-  }
+        ),
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     //google button
                     SquareTitle(
+                        onTap: () => AuthService().signInWithGoogle(),
                         imagePath: "lib/images/Google__G__Logo.svg.png"),
                     SizedBox(width: 10),
                   ],

@@ -1,3 +1,4 @@
+import 'package:astro44/servieces/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:astro44/componets/my_textfield.dart';
@@ -206,12 +207,9 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     //google button
                     SquareTitle(
+                      onTap: () => AuthService().signInWithGoogle(),
                         imagePath: "lib/images/Google__G__Logo.svg.png"),
                     SizedBox(width: 10),
-
-                    //apple button
-                    SquareTitle(
-                        imagePath: "lib/images/apple-logo-transparent.png"),
                   ],
                 ),
                 const SizedBox(height: 10),

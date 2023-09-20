@@ -1,12 +1,11 @@
+import 'package:astro44/pages/email_verification_page.dart';
 import 'package:astro44/pages/home_page.dart';
 import 'package:astro44/pages/login_or_register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'login_page.dart';
-
 class Auth extends StatelessWidget {
-  const Auth({super.key});
+  const Auth({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +13,24 @@ class Auth extends StatelessWidget {
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          //user is logged in
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
+          // User is logged in
           if (snapshot.hasData) {
-            return HomePage();
+            User? user = snapshot.data;
+            if (user != null && user.emailVerified) {
+              return HomePage();
+            } else {
+              return EmailVerificationPage();
+            }
           }
 
-          //user is not logged in
-          else{
-            return LoginOrRegisterPage();
-          }
+          // User is not logged in
+          return LoginOrRegisterPage();
         },
       ),
     );
