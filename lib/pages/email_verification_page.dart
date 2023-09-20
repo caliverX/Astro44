@@ -12,57 +12,91 @@ class EmailVerificationPage extends StatefulWidget {
 }
 
 class _EmailVerificationPageState extends State<EmailVerificationPage> {
+  // This variable stores the state of the user's email verification.
   bool isEmailVerified = false;
+
+  // This variable stores the state of the resend email button.
   bool canResendEmail = false;
+
+  // This variable stores a timer that is used to periodically check if the user's email is verified.
   Timer? timer;
+
+  // This variable stores the current user.
   User? _user;
 
   @override
   void initState() {
+    // Call the superclass's initState() method.
     super.initState();
+
+    // Check if the user's email is verified.
     isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
+    // If the user's email is not verified, start a timer to periodically check if the user's email is verified.
     if (!isEmailVerified) {
       _sendVerificationEmail();
 
       timer = Timer.periodic(
         const Duration(seconds: 1),
         (_) async {
+          // Get the current user.
           _user = await FirebaseAuth.instance.currentUser!;
+
+          // Reload the current user's data.
           await _user!.reload();
+
+          // Check if the user's email is verified.
           checkEmailVerified();
         },
       );
     }
   }
 
+  // This method sends a verification email to the user.
   void _sendVerificationEmail() async {
     try {
+      // Get the current user.
       final user = FirebaseAuth.instance.currentUser!;
+
+      // Send a verification email to the user.
       await user.sendEmailVerification();
+
+      // Disable the resend email button for 5 seconds.
       setState(() => canResendEmail = false);
+
+      // Wait for 5 seconds.
       await Future.delayed(Duration(seconds: 5));
+
+      // Enable the resend email button.
       setState(() => canResendEmail = true);
     } catch (e) {
-      print(
-          "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-      print(isEmailVerified);
+      // Print the error.
+      print(e);
     }
   }
 
   @override
   void dispose() {
+    // Cancel the timer.
     timer?.cancel();
+
+    // Call the superclass's dispose() method.
     super.dispose();
   }
 
+  // This method checks if the user's email is verified.
   Future checkEmailVerified() async {
+    // Get the current user's email verification status.
     isEmailVerified = await FirebaseAuth.instance.currentUser!.emailVerified;
+
+    // Update the state.
     setState(() {});
 
+    // If the user's email is verified, cancel the timer and navigate to the Auth page.
     if (isEmailVerified) {
       timer?.cancel();
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Auth()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => Auth()));
     }
   }
 
