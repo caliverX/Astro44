@@ -5,7 +5,6 @@ import 'package:astro44/componets/my_button.dart';
 import 'package:astro44/componets/square.dart';
 import 'package:astro44/servieces/auth_service.dart';
 
-
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
   const RegisterPage({super.key, required this.onTap});
@@ -80,32 +79,32 @@ class _RegisterPageState extends State<RegisterPage> {
         showErrorDialog('An error occurred. Please try again later.');
       }
     } finally {
-  if (mounted) {
-    setState(() {
-      isLoading = false;
-    });
-  }
-}
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
   }
 
   void showErrorDialog(String message) {
-  if (mounted) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.deepPurple,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
+    if (mounted) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Colors.deepPurple,
+            title: Center(
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
