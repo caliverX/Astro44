@@ -11,28 +11,30 @@ class Auth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          // User is logged in
-          if (snapshot.hasData) {
-            User? user = snapshot.data;
-            if (user != null && user.emailVerified) {
-              return HomePage();
-            } else {
-              return EmailVerificationPage();
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
-          }
 
-          // User is not logged in
-          return LoginOrRegisterPage();
-        },
-      ),
+            // User is logged in
+            if (snapshot.hasData) {
+              // User is logged in
+              User? user = snapshot.data;
+              if (user != null && user.emailVerified) {
+                // User is logged in and email is verified
+                return HomePage();
+              } else {
+                // User is logged in and email is not verified
+                return EmailVerificationPage();
+              }
+            } else {
+              // User is not logged in
+              return LoginOrRegisterPage();
+            }
+          }),
     );
   }
 }

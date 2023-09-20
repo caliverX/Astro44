@@ -81,27 +81,31 @@ class _RegisterPageState extends State<RegisterPage> {
         showErrorDialog('An error occurred. Please try again later.');
       }
     } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
+  if (mounted) {
+    setState(() {
+      isLoading = false;
+    });
+  }
+}
   }
 
   void showErrorDialog(String message) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        backgroundColor: Colors.deepPurple,
-        title: Center(
-          child: Text(
-            message,
-            style: const TextStyle(color: Colors.white),
+  if (mounted) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.deepPurple,
+          title: Center(
+            child: Text(
+              message,
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
+  }
 }
 
   @override
