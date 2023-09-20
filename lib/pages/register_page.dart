@@ -4,7 +4,6 @@ import 'package:astro44/componets/my_textfield.dart';
 import 'package:astro44/componets/my_button.dart';
 import 'package:astro44/componets/square.dart';
 import 'package:astro44/servieces/auth_service.dart';
-import 'email_verification_page.dart';
 
 
 class RegisterPage extends StatefulWidget {
