@@ -1,3 +1,4 @@
+// Import necessary packages.
 import 'package:astro44/servieces/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,66 +6,78 @@ import 'package:astro44/componets/my_textfield.dart';
 import 'package:astro44/componets/my_button.dart';
 import 'package:astro44/componets/square.dart';
 
+// Define the LoginPage class.
 class LoginPage extends StatefulWidget {
-  final Function()? onTap;
+  final Function()?
+      onTap; // Callback function for when the user taps the "Register now" button.
+
   LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
+// Define the _LoginPageState class.
 class _LoginPageState extends State<LoginPage> {
-  //text editing controllers
+  // Create text editing controllers for the email and password fields.
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
 
-  //sign user in
+  // Sign the user in.
   void signInUser() async {
-    //show loading circle
+    // Show a loading indicator.
     showDialog(
-        context: context,
-        builder: (context) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        });
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
 
-    //try sign in
-
+    // Try to sign in the user.
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-      //pop the loading circle
+
+      // Pop the loading indicator.
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
-      //pop the loading circle
+      // Pop the loading indicator.
       Navigator.pop(context);
-      //show error message
+
+      // Show an error message.
       showErorrMessage(e.code);
     }
   }
 
-  // wrong message to user
+  // Show an error message to the user.
   void showErorrMessage(String message) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Colors.grey[300],
           title: Center(
             child: Text(
               message,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.black),
             ),
           ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('OK'),
+            ),
+          ],
         );
       },
     );
   }
 
+  // Reset the user's password.
   void resetPassword() async {
     showDialog(
       context: context,
@@ -79,14 +92,22 @@ class _LoginPageState extends State<LoginPage> {
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: emailController.text.trim(),
       );
+
+      // Pop the loading indicator.
       Navigator.pop(context);
+
+      // Show a success message.
       showResetPasswordSuccessMessage();
     } on FirebaseAuthException catch (e) {
+      // Pop the loading indicator.
       Navigator.pop(context);
+
+      // Show an error message.
       showErorrMessage(e.code);
     }
   }
 
+  // Show a success message to the user after their password has been reset.
   void showResetPasswordSuccessMessage() {
     showDialog(
       context: context,
@@ -103,7 +124,6 @@ class _LoginPageState extends State<LoginPage> {
       },
     );
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +228,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     //google button
                     SquareTitle(
-                      onTap: () => AuthService().signInWithGoogle(),
+                        onTap: () => AuthService().signInWithGoogle(),
                         imagePath: "lib/images/Google__G__Logo.svg.png"),
                     SizedBox(width: 10),
                   ],

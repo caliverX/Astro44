@@ -105,7 +105,11 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
       ? HomePage()
       : Scaffold(
           appBar: AppBar(
-            title: Text("Verify Email"),
+            backgroundColor: Colors.grey[300],
+            title: Text(
+              "Verify Email",
+              style: TextStyle(color: Colors.grey[700]),
+            ),
           ),
           body: Padding(
             padding: EdgeInsets.all(16),
