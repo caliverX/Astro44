@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:astro44/componets/my_textfield.dart';
 import 'package:astro44/componets/my_button.dart';
@@ -7,6 +8,7 @@ import 'package:astro44/servieces/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
+
   const RegisterPage({super.key, required this.onTap});
 
   @override
@@ -14,6 +16,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  late final firestore = FirebaseFirestore.instance;
+  final usernameController = TextEditingController();
+  final fullnameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
@@ -23,6 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {
       isLoading = true;
     });
+    final userDoc = firestore.collection('users').doc();
 
     try {
       if (passwordController.text == confirmPasswordController.text) {
@@ -33,8 +39,20 @@ class _RegisterPageState extends State<RegisterPage> {
           password: passwordController.text.trim(),
         );
 
+        // Add the username and fullname to the UserCredential object
+        userCredential.user?.updateProfile(
+            displayName: usernameController.text, photoURL: null);
+
         // Send email verification
         await userCredential.user?.sendEmailVerification();
+
+        // Save the user data to Firestore
+        userDoc.set({
+          'username': usernameController.text,
+          'fullname': fullnameController.text,
+          'email': emailController.text,
+          'password': passwordController.text,
+        });
 
         // Show success message or navigate to the next screen
         showDialog(
@@ -72,6 +90,8 @@ class _RegisterPageState extends State<RegisterPage> {
           showErrorDialog('The password provided is too weak.');
         } else if (e.code == 'email-already-in-use') {
           showErrorDialog('The account already exists for that email.');
+        } else if (e.code == 'username-in-use') {
+          showErrorDialog('The username already used.');
         } else {
           showErrorDialog('An error occurred. Please try again later.');
         }
@@ -88,29 +108,29 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void showErrorDialog(String message) {
-  if (mounted) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.grey[300],
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.black),
+    if (mounted) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Colors.grey[300],
+            title: Center(
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.black),
+              ),
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +159,22 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 25),
+
+                //username
+                Mytextfield(
+                  controller: usernameController,
+                  hintText: "username",
+                  obscurText: false,
+                ),
+                const SizedBox(height: 10),
+
+                //fullname
+                Mytextfield(
+                  controller: fullnameController,
+                  hintText: "fullname",
+                  obscurText: false,
+                ),
+                const SizedBox(height: 10),
 
                 //email
                 Mytextfield(
