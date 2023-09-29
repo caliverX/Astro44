@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:astro44/model/map_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final user = FirebaseAuth.instance.currentUser;
 
-  //sign user out method
+  // Sign user out method
   void signUserOut() {
     FirebaseAuth.instance.signOut();
   }
@@ -14,14 +15,24 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(actions: [
-        IconButton(onPressed: signUserOut, icon: Icon(Icons.logout))
-      ]),
-      body: Center(
-          child: Text(
-        "Logged In As: ${user?.email}",
-        style: TextStyle(fontSize: 20),
-      )),
+      appBar: AppBar(
+        backgroundColor: Colors.grey[500],
+        actions: [
+          IconButton(onPressed: signUserOut, icon: const Icon(Icons.logout))
+        ],
+      ),
+      body: FutureBuilder<Widget?>(
+        future: MapPage.create(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data!;
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 }

@@ -143,13 +143,13 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 25),
+                const SizedBox(height: 10),
                 //logo
                 const Icon(
                   Icons.lock,
                   size: 100,
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 10),
                 //creating account
                 Text(
                   "let\'s create an account for you!",
@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     fontSize: 16,
                   ),
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
 
                 //username
                 Mytextfield(
@@ -171,7 +171,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 //fullname
                 Mytextfield(
                   controller: fullnameController,
-                  hintText: "fullname",
+                  hintText: "full name",
                   obscurText: false,
                 ),
                 const SizedBox(height: 10),
@@ -198,15 +198,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: "confirm Password",
                   obscurText: true,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
 
-                const SizedBox(height: 25),
                 //sign in button
                 mybutton(
                   text: "Sign Up",
                   onTap: signUserUp,
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 15),
 
                 //or continue with
                 Padding(
@@ -265,10 +264,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         "Login now",
                         style: TextStyle(
                             color: Colors.blue, fontWeight: FontWeight.bold),
+                            
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 25),
               ],
             ),
           ),

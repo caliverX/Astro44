@@ -1,6 +1,6 @@
 //and that is my login_or_register_page.dart
-import 'package:astro44/securty/login_page.dart';
-import 'package:astro44/securty/register_page.dart';
+import 'package:astro44/model/securty/login_page.dart';
+import 'package:astro44/model/securty/register_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginOrRegisterPage extends StatefulWidget {
