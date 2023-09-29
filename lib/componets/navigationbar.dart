@@ -12,7 +12,7 @@ class NavigationBar extends StatefulWidget {
     const SettingsPage(),
   ];
 
-  const NavigationBar({super.key});
+  const NavigationBar({Key? key}) : super(key: key);
 
   @override
   _NavigationBarState createState() => _NavigationBarState();
@@ -29,33 +29,48 @@ class _NavigationBarState extends State<NavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey[900],
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+    return Theme(
+      data: Theme.of(context).copyWith(
+        primaryColor: Colors.grey, // Change the navigation bar color here
+      ),
+      child: Stack(
+        children: [
+          Scaffold(
+            backgroundColor: Colors.grey,
+            body: NavigationBar._pages[_selectedIndex],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.report),
-            label: 'Report',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: BottomNavigationBar(
+              items:  <BottomNavigationBarItem>[
+                BottomNavigationBarItem(backgroundColor: Colors.grey[300],
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.report),
+                  label: 'Report',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.notifications),
+                  label: 'Notifications',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  label: 'Settings',
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.black,
+              onTap: _onItemTapped,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+            ),
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        onTap: _onItemTapped,
       ),
-      body: NavigationBar._pages[_selectedIndex],
     );
   }
 }
