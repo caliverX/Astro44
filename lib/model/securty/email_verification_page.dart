@@ -40,7 +40,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
         const Duration(seconds: 1),
         (_) async {
           // Get the current user.
-          _user = await FirebaseAuth.instance.currentUser!;
+          _user = FirebaseAuth.instance.currentUser!;
 
           // Reload the current user's data.
           await _user!.reload();
@@ -65,7 +65,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
       setState(() => canResendEmail = false);
 
       // Wait for 5 seconds.
-      await Future.delayed(Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 5));
 
       // Enable the resend email button.
       setState(() => canResendEmail = true);
@@ -87,7 +87,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
   // This method checks if the user's email is verified.
   Future checkEmailVerified() async {
     // Get the current user's email verification status.
-    isEmailVerified = await FirebaseAuth.instance.currentUser!.emailVerified;
+    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
 
     // Update the state.
     setState(() {});
@@ -96,7 +96,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     if (isEmailVerified) {
       timer?.cancel();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => Auth()));
+          context, MaterialPageRoute(builder: (_) => const Auth()));
     }
   }
 
@@ -112,37 +112,37 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
             ),
           ),
           body: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "A verfication email is sent",
                   style: TextStyle(fontSize: 20),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(50),
+                    minimumSize: const Size.fromHeight(50),
                   ),
-                  icon: Icon(Icons.email, size: 32),
-                  label: Text(
+                  icon: const Icon(Icons.email, size: 32),
+                  label: const Text(
                     "Resent Email",
                     style: TextStyle(fontSize: 24),
                   ),
                   onPressed: canResendEmail ? _sendVerificationEmail : null,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 TextButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(50),
+                    minimumSize: const Size.fromHeight(50),
                   ),
-                  child: Text(
+                  child: const Text(
                     "cancell",
                     style: TextStyle(fontSize: 24),
                   ),

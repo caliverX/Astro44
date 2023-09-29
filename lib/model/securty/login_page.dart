@@ -11,7 +11,7 @@ class LoginPage extends StatefulWidget {
   final Function()?
       onTap; // Callback function for when the user taps the "Register now" button.
 
-  LoginPage({super.key, required this.onTap});
+  const LoginPage({super.key, required this.onTap});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -112,12 +112,12 @@ class _LoginPageState extends State<LoginPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
+        return const AlertDialog(
           backgroundColor: Colors.deepPurple,
           title: Center(
             child: Text(
               'Password Reset Email Sent',
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white),
             ),
           ),
         );
@@ -230,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                     SquareTitle(
                         onTap: () => AuthService().signInWithGoogle(),
                         imagePath: "lib/images/Google__G__Logo.svg.png"),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                   ],
                 ),
                 const SizedBox(height: 10),

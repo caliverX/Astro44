@@ -60,15 +60,15 @@ class _RegisterPageState extends State<RegisterPage> {
           builder: (context) {
             return AlertDialog(
               backgroundColor: Colors.deepPurple,
-              title: Center(
+              title: const Center(
                 child: Text(
                   'Registration Successful. Please check your email for verification.',
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
               actions: [
                 TextButton(
-                  child: Text(
+                  child: const Text(
                     'OK',
                     style: TextStyle(color: Colors.white),
                   ),
@@ -123,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -152,7 +152,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10),
                 //creating account
                 Text(
-                  "let\'s create an account for you!",
+                  "let's create an account for you!",
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -244,7 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     SquareTitle(
                         onTap: () => AuthService().signInWithGoogle(),
                         imagePath: "lib/images/Google__G__Logo.svg.png"),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                   ],
                 ),
                 const SizedBox(height: 10),

@@ -4,12 +4,14 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class MapPage extends StatefulWidget {
+  const MapPage({super.key});
+
   static Future<MapPage> create() async {
     // Load the map data
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     // Create and return a MapPage widget
-    return MapPage();
+    return const MapPage();
   }
 
   @override
@@ -18,7 +20,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final LatLng _center =
-      LatLng(32.3947, 15.0947); // The center of Misurata city
+      const LatLng(32.3947, 15.0947); // The center of Misurata city
   final double _zoom = 12.0; // The zoom level
 
   late GoogleMapController _mapController;
@@ -35,7 +37,7 @@ class _MapPageState extends State<MapPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
-        title: Text(
+        title: const Text(
           'Misurata Map',
           style: TextStyle(color: Colors.white),
         ),
@@ -71,13 +73,13 @@ class _MapPageState extends State<MapPage> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Outside of Misurata'),
-            content: Text(
+            title: const Text('Outside of Misurata'),
+            content: const Text(
                 'The Misurata Map app can only be used within the boundaries of Misurata. Please move to Misurata to use the app.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           ),
