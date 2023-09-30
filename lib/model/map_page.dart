@@ -26,6 +26,9 @@ class _MapPageState extends State<MapPage> {
   late GoogleMapController _mapController;
   final Geolocator _geolocator = Geolocator();
 
+  // Add a new variable to store the user's coordinates.
+  LatLng _userCoordinates = LatLng(0, 0);
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +46,7 @@ class _MapPageState extends State<MapPage> {
         ),
       ),
       body: GoogleMap(
+        zoomControlsEnabled: false, // Disable the zoom in and zoom out buttons.
         onMapCreated: (controller) => _mapController = controller,
         initialCameraPosition: CameraPosition(
           target: _center,
@@ -61,11 +65,14 @@ class _MapPageState extends State<MapPage> {
       // Get the user's current location.
       Position position = await Geolocator.getCurrentPosition();
 
-      // Check if the user's location is within the boundaries of Misurata.
-      if (position.latitude >= 32.3947 &&
-          position.latitude <= 32.4052 &&
-          position.longitude >= 15.0947 &&
-          position.longitude <= 15.1052) {
+      // Store the user's coordinates in the variable you created in step 1.
+      _userCoordinates = LatLng(position.latitude, position.longitude);
+
+      // Check if the user's coordinates are within the boundaries of Misurata.
+      if (_userCoordinates.latitude >= 32.3947 &&
+          _userCoordinates.latitude <= 32.4052 &&
+          _userCoordinates.longitude >= 15.0947 &&
+          _userCoordinates.longitude <= 15.1052) {
         // Display the Misurata map.
         _mapController.moveCamera(CameraUpdate.newLatLng(_center));
       } else {

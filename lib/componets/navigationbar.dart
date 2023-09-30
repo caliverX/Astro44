@@ -45,19 +45,19 @@ class _NavigationBarState extends State<NavigationBar> {
             right: 0,
             child: BottomNavigationBar(
               items:  <BottomNavigationBarItem>[
-                BottomNavigationBarItem(backgroundColor: Colors.grey[300],
-                  icon: Icon(Icons.home),
+                BottomNavigationBarItem(backgroundColor: Colors.grey,
+                  icon: const Icon(Icons.home),
                   label: 'Home',
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.report),
+                const BottomNavigationBarItem(
+                  icon: Icon(Icons.add_circle_sharp),
                   label: 'Report',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.notifications),
                   label: 'Notifications',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.settings),
                   label: 'Settings',
                 ),
