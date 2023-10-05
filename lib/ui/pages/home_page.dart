@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:astro44/model/map_page.dart';
+import 'package:astro44/model/location/map_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});

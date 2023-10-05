@@ -1,8 +1,8 @@
+import 'package:astro44/ui/pages/master_page.dart';
 import 'package:astro44/model/securty/email_verification_page.dart';
 import 'package:astro44/model/securty/login_or_register_page.dart';
-import 'package:astro44/componets/navigationbar.dart' as MyNavigationBar;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart' hide NavigationBar;
+import 'package:flutter/material.dart';
 
 class Auth extends StatelessWidget {
   const Auth({Key? key}) : super(key: key);
@@ -25,7 +25,7 @@ class Auth extends StatelessWidget {
             User? user = snapshot.data;
             if (user != null && user.emailVerified) {
               // User is logged in and email is verified
-              return  const MyNavigationBar.NavigationBar(); // Replace "HomePage()" with "NavigationBar()"
+              return  const HomeNavigationBar(); // Replace "HomePage()" with "NavigationBar()"
             } else {
               // User is logged in and email is not verified
               return const EmailVerificationPage();

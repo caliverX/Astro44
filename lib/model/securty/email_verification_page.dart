@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:astro44/pages/home_page.dart';
+import 'package:astro44/ui/pages/home_page.dart';
 import 'package:astro44/model/securty/auth_page.dart';
 import 'dart:async';
 
