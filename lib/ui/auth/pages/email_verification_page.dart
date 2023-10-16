@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:astro44/ui/pages/home_page.dart';
-import 'package:astro44/model/securty/auth_page.dart';
+import 'package:astro44/ui/home/pages/home_page.dart';
+import 'package:astro44/ui/check/auth_page.dart';
 import 'dart:async';
+import 'package:http/http.dart' as http;
 
 class EmailVerificationPage extends StatefulWidget {
   const EmailVerificationPage({Key? key}) : super(key: key);
@@ -96,7 +100,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
     if (isEmailVerified) {
       timer?.cancel();
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const Auth()));
+          context, MaterialPageRoute(builder: (_) => const AuthCheck()));
     }
   }
 
@@ -147,7 +151,41 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     style: TextStyle(fontSize: 24),
                   ),
                   onPressed: () => FirebaseAuth.instance.signOut(),
-                )
+                ),
+                FloatingActionButton(onPressed: () async {
+                  String uui = FirebaseAuth.instance.currentUser!.uid;
+                  print(uui);
+
+
+                  var fcm = await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(uui).get();
+                  var data = {
+                    "to": fcm.get('fcm'),
+                    "notification": {
+                      "body": "New announcement assigned",
+                      "OrganizationId": "2",
+                      "content_available": true,
+                      "priority": "high",
+                      "subtitle": "Elementary School",
+                      "title": "hello"
+                    },
+                  };
+                  const JsonEncoder encoder = JsonEncoder.withIndent('  ');
+
+                  final String jsonString = encoder.convert(data);
+
+                  var respond = await http.post(
+                      Uri.parse("https://fcm.googleapis.com/fcm/send"),
+                      headers: {
+                        "Content-Type": "application/json",
+                        "Authorization":
+                            "key=AAAAGtuQ8Q0:APA91bHTnUy4ifPviejyRt18FgeLdBJ_k7GIu40gegveSF0qIHVMZVfw5_-7YFduyEaJwPIqzZKaoOLUbvzZqOr-sEfVcrlCkA4DDue-ha8SMz34GzQ24saUoHLCJrbe51s04pBdrQvR"
+                      },
+                      body: jsonString);
+
+                  print(respond.body);
+                })
               ],
             ),
           ),

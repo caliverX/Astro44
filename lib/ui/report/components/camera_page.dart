@@ -1,4 +1,4 @@
-import 'package:astro44/model/open_camera_app/reporting.dart';
+import 'package:astro44/ui/report/components/reporting.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

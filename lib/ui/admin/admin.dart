@@ -2,14 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
-class AdminPage extends StatelessWidget {
+class AdminPage extends StatefulWidget {
+  AdminPage({super.key});
+
+  @override
+  State<AdminPage> createState() => _AdminPageState();
+}
+
+class _AdminPageState extends State<AdminPage> {
+  @override
+  void initState() {
+    super.initState();
+    _subscribeToAdminTopic();
+  }
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
+
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  Future<void> _subscribeToAdminTopic() async {
+    try {
+      await _firebaseMessaging.subscribeToTopic('admin');
+      print('Subscribed to admin topic');
+    } catch (e) {
+      print('Failed to subscribe to admin topic: $e');
+    }
+  }
 
   Future<void> _showNotification(String title, String body) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -18,6 +46,7 @@ class AdminPage extends StatelessWidget {
       'channel_name',
       importance: Importance.max,
       priority: Priority.high,
+      icon: "@mipmap/ic_launcher",
     );
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -74,13 +103,18 @@ class AdminPage extends StatelessWidget {
     // Get the user's device token from Firestore
     DocumentSnapshot userSnapshot =
         await _firestore.collection('users').doc(userId).get();
-    String? deviceToken =
-        (userSnapshot.data() as Map<String, dynamic>?)?['device_token'];
+    // Check if user document exists and contains necessary fields
+    if (userSnapshot.exists &&
+        userSnapshot.data() != null &&
+        userSnapshot.data() is Map<String, dynamic>) {
+      // Get fullname and username from user document
+      String fullname =
+          (userSnapshot.data() as Map<String, dynamic>)['fullname'] ?? '';
+      String username =
+          (userSnapshot.data() as Map<String, dynamic>)['username'] ?? '';
 
-    if (deviceToken != null) {
-      // Send notification to the user
-      await _showNotification(
-          'Report Refused', 'Your report has been refused.');
+      await _showNotification('Report Refused',
+          'Your report has been refused. $fullname (@$username).');
     }
   }
 
@@ -101,8 +135,6 @@ class AdminPage extends StatelessWidget {
           await _firestore.collection('users').doc(userId).get();
 
       if (!userSnapshot.exists) {
-        print(
-            '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>User document does not exist for user ID<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<: $userId');
         continue;
       }
 
@@ -111,8 +143,6 @@ class AdminPage extends StatelessWidget {
       final username = userData['username'];
 
       if (fullName == null || username == null) {
-        print(
-            '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Either fullName or username is null for user ID<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<: $userId');
         continue;
       }
 
@@ -175,6 +205,8 @@ class AdminPage extends StatelessWidget {
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
+                          var x = snapshot.data!.data();
+
                           Map<String, dynamic> userData =
                               snapshot.data!.data() as Map<String, dynamic>;
                           String fullName = userData['fullname'];

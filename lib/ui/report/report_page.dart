@@ -1,5 +1,5 @@
-import 'package:astro44/componets/square.dart';
-import 'package:astro44/model/open_camera_app/camera_page.dart';
+import 'package:astro44/ui/shared_components/componets/square.dart';
+import 'package:astro44/ui/report/components/camera_page.dart';
 import 'package:flutter/material.dart';
 
 class ReportPage extends StatefulWidget {
@@ -40,7 +40,7 @@ class _ReportPageState extends State<ReportPage> {
                             MaterialPageRoute(
                                 builder: (context) => const CameraPage()));
                       },
-                      imagePath: 'lib/images/download.png',
+                      imagePath: 'assets/images/download.png',
                     ),
                   ),
                   Card(
@@ -52,7 +52,7 @@ class _ReportPageState extends State<ReportPage> {
                                 builder: (context) => const CameraPage()));
                       },
                       imagePath:
-                          'lib/images/49-496403_streetlight-clipart-electric-post-electricity-png-download.png',
+                          'assets/images/49-496403_streetlight-clipart-electric-post-electricity-png-download.png',
                     ),
                   ),
                 ],

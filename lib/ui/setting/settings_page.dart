@@ -1,4 +1,4 @@
-import 'package:astro44/ui/pages/admin_folder/admin.dart';
+import 'package:astro44/ui/admin/admin.dart';
 import 'package:flutter/material.dart';
 
 

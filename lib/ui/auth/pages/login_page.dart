@@ -1,10 +1,48 @@
 // Import necessary packages.
-import 'package:astro44/servieces/auth_service.dart';
+import 'package:astro44/data/auth/servieces/auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:astro44/componets/my_textfield.dart';
-import 'package:astro44/componets/my_button.dart';
-import 'package:astro44/componets/square.dart';
+import 'package:astro44/ui/shared_components/componets/my_textfield.dart';
+import 'package:astro44/ui/shared_components/componets/my_button.dart';
+import 'package:astro44/ui/shared_components/componets/square.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+
+
+
+class AuthService {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<void> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // Obtain the FCM token
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+    // Create a new document in Firestore with the user's information
+    FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+      'username': userCredential.user!.displayName,
+      'fullname': userCredential.user!.displayName,
+      'fcm': fcmToken,
+      'admin': false,
+    });
+  }
+}
 
 // Define the LoginPage class.
 class LoginPage extends StatefulWidget {
@@ -229,7 +267,7 @@ class _LoginPageState extends State<LoginPage> {
                     //google button
                     SquareTitle(
                         onTap: () => AuthService().signInWithGoogle(),
-                        imagePath: "lib/images/Google__G__Logo.svg.png"),
+                        imagePath: "assets/images/Google__G__Logo.svg.png"),
                     const SizedBox(width: 10),
                   ],
                 ),

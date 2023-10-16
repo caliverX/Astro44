@@ -1,15 +1,15 @@
 //and that is my login_or_register_page.dart
-import 'package:astro44/model/securty/login_page.dart';
-import 'package:astro44/model/securty/register_page.dart';
+import 'package:astro44/ui/auth/pages/login_page.dart';
+import 'package:astro44/ui/auth/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
-class LoginOrRegisterPage extends StatefulWidget {
-  const LoginOrRegisterPage({super.key});
+class AuthPage extends StatefulWidget {
+  const AuthPage({super.key});
   @override
-  State<LoginOrRegisterPage> createState() => _LoginOrRegisterPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _LoginOrRegisterPageState extends State<LoginOrRegisterPage> {
+class _AuthPageState extends State<AuthPage> {
   //initially show login page
   bool showLoginPage = true;
 

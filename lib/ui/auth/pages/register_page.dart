@@ -1,10 +1,49 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:astro44/componets/my_textfield.dart';
-import 'package:astro44/componets/my_button.dart';
-import 'package:astro44/componets/square.dart';
-import 'package:astro44/servieces/auth_service.dart';
+import 'package:astro44/ui/shared_components/componets/my_textfield.dart';
+import 'package:astro44/ui/shared_components/componets/my_button.dart';
+import 'package:astro44/ui/shared_components/componets/square.dart';
+import 'package:astro44/data/auth/servieces/auth_service.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+
+class AuthService {
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<void> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // Obtain the FCM token
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+
+    // Create a new document in Firestore with the user's information
+    FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+      'username': userCredential.user!.displayName,
+      'fullname': userCredential.user!.displayName,
+      'fcm': fcmToken,
+      'admin': false,
+    });
+  }
+}
+
+
+
+
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -16,6 +55,11 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  var _fcm = FirebaseMessaging.instance;
+
+  String? token = "";
+
+
   late final firestore = FirebaseFirestore.instance;
   final usernameController = TextEditingController();
   final fullnameController = TextEditingController();
@@ -28,16 +72,33 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {
       isLoading = true;
     });
-    final userDoc = firestore.collection('users').doc();
+
+  
 
     try {
       if (passwordController.text == confirmPasswordController.text) {
         // Create the user with email and password
-        final UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
-        );
+        )
+            .then((_userCredential) async {
+          print(_userCredential.user!.uid);
+                    print(_fcm.getToken());
+
+          firestore.collection('users').doc(_userCredential.user!.uid).set({
+            'fcm': await _fcm.getToken()??"null",
+            'username': usernameController.text,
+            'fullname': fullnameController.text,
+            'email': emailController.text,
+            'password': passwordController.text,
+            'admin': false,
+          });
+
+          return _userCredential;
+        });
 
         // Add the username and fullname to the UserCredential object
         userCredential.user?.updateProfile(
@@ -47,12 +108,6 @@ class _RegisterPageState extends State<RegisterPage> {
         await userCredential.user?.sendEmailVerification();
 
         // Save the user data to Firestore
-        userDoc.set({
-          'username': usernameController.text,
-          'fullname': fullnameController.text,
-          'email': emailController.text,
-          'password': passwordController.text,
-        });
 
         // Show success message or navigate to the next screen
         showDialog(
@@ -243,7 +298,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     //google button
                     SquareTitle(
                         onTap: () => AuthService().signInWithGoogle(),
-                        imagePath: "lib/images/Google__G__Logo.svg.png"),
+                        imagePath: "assets/images/Google__G__Logo.svg.png"),
                     const SizedBox(width: 10),
                   ],
                 ),
@@ -264,7 +319,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         "Login now",
                         style: TextStyle(
                             color: Colors.blue, fontWeight: FontWeight.bold),
-                            
                       ),
                     ),
                   ],
