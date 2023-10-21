@@ -3,9 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get/get.dart';
 
 class AdminPage extends StatefulWidget {
-  AdminPage({super.key});
+  const AdminPage({super.key});
 
   @override
   State<AdminPage> createState() => _AdminPageState();
@@ -59,15 +60,30 @@ class _AdminPageState extends State<AdminPage> {
       payload: 'notification',
     );
   }
+  
 
   Future<void> _approveReport(String userId, String reportId) async {
-    // Update status of report
-    await _firestore
+    // Get report document from 'potholes_report' subcollection
+    DocumentSnapshot reportSnapshot = await _firestore
         .collection('users')
         .doc(userId)
         .collection('potholes_report')
         .doc(reportId)
-        .update({'status': 'approved'});
+        .get();
+
+    // Check if report document exists and contains necessary fields
+    if (!reportSnapshot.exists ||
+        reportSnapshot.data() == null ||
+        !(reportSnapshot.data() is Map<String, dynamic>)) {
+      print('Error: Report document or necessary fields not found.');
+      return;
+    }
+
+    Map<String, dynamic> reportData =
+        reportSnapshot.data() as Map<String, dynamic>;
+
+    // Update status of report
+    await reportSnapshot.reference.update({'status': 'approved'});
 
     // Get user document from users collection
     DocumentSnapshot userSnapshot =
@@ -86,6 +102,23 @@ class _AdminPageState extends State<AdminPage> {
       // Send notification to user
       await _showNotification('Report Approved',
           'Your report has been approved by $fullname (@$username).');
+
+      // Send notification to user in Firestore
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .add({
+        'reportId': reportId,
+        'type': 'approve',
+        'message': 'Your report has been approved.',
+        'image_url':
+            reportData['image_url'], // add image_url to notification data
+        'description':
+            reportData['description'], // add description to notification data
+        'timestamp': FieldValue.serverTimestamp(),
+        'isfixed': false,
+      });
     } else {
       // Handle error - user document or necessary fields not found
       print('Error: User document or necessary fields not found.');
@@ -100,10 +133,10 @@ class _AdminPageState extends State<AdminPage> {
         .doc(reportId)
         .delete();
 
-    // Get the user's device token from Firestore
+// Get the user's device token from Firestore
     DocumentSnapshot userSnapshot =
         await _firestore.collection('users').doc(userId).get();
-    // Check if user document exists and contains necessary fields
+// Check if user document exists and contains necessary fields
     if (userSnapshot.exists &&
         userSnapshot.data() != null &&
         userSnapshot.data() is Map<String, dynamic>) {
@@ -115,18 +148,29 @@ class _AdminPageState extends State<AdminPage> {
 
       await _showNotification('Report Refused',
           'Your report has been refused. $fullname (@$username).');
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .add({
+        'reportId': reportId,
+        'type': 'delete',
+        'message': 'Your report has been delete it.',
+        'timestamp': FieldValue.serverTimestamp(),
+        'isfixed': true,
+      });
     }
   }
 
   Future<List<Map<String, dynamic>>> getReportsData() async {
-    // Get the reports from the 'reports' collection
+// Get the reports from the 'reports' collection
     QuerySnapshot<Map<String, dynamic>> reportsSnapshot =
         await _firestore.collection('reports').get();
 
     final reports = reportsSnapshot.docs;
     List<Map<String, dynamic>> reportDataList = [];
 
-    // Iterate over the reports and get the user's data for each report
+// Iterate over the reports and get the user's data for each report
     for (final report in reports) {
       final userId = report.reference.parent.parent!.id;
 
@@ -165,19 +209,21 @@ class _AdminPageState extends State<AdminPage> {
       return Text('You are not authorized to view this page.');
     }
 
-    return ScaffoldMessenger(
+     return ScaffoldMessenger(
         key: _scaffoldMessengerKey,
         child: Scaffold(
             appBar: AppBar(
               title: Text('Admin Page'),
+              backgroundColor: Colors.blue,
             ),
             body: StreamBuilder<QuerySnapshot>(
               stream: _firestore.collectionGroup('potholes_report').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
-
                 final reports = snapshot.data!.docs
                     .where((report) =>
                         (report.data() as Map<String, dynamic>)['image_url'] !=
@@ -185,7 +231,6 @@ class _AdminPageState extends State<AdminPage> {
                         (report.data() as Map<String, dynamic>)['status'] !=
                             'approved')
                     .toList();
-
                 return ListView.builder(
                   itemCount: reports.length,
                   itemBuilder: (context, index) {
@@ -212,15 +257,43 @@ class _AdminPageState extends State<AdminPage> {
                           String fullName = userData['fullname'];
                           String username = userData['username'];
 
+                          if (fullName == null || username == null) {
+                            return Text(
+                                'Error: User document or necessary fields not found.');
+                          }
+
                           return ListTile(
                             title: Text(
                                 '${userData['fullname']} (${userData['username']})'),
                             subtitle: Text(
                                 'Report: ${reportData['description'] ?? 'No description provided.'}'),
-                            leading: Image.network(
-                              reportData['image_url'] ?? '',
-                              width: 50,
-                              height: 50,
+                            leading: GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Image'),
+                                      content: Image.network(
+                                          reportData['image_url']),
+                                      actions: [
+                                        TextButton(
+                                          child: Text('OK'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              child: Image.network(
+                                reportData['image_url'] ?? '',
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,

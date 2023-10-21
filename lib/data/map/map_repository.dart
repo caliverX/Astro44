@@ -19,27 +19,4 @@ class MapRepository {
 
 
 
-      // if (_mapController != null &&
-      //     _userCoordinates.latitude >= 32.3 &&
-      //     _userCoordinates.latitude <= 32.5 &&
-      //     _userCoordinates.longitude >= 15.0 &&
-      //     _userCoordinates.longitude <= 15.2) {
-      //   _mapController!.moveCamera(CameraUpdate.newLatLng(_center));
-      // } else {
-      //   if (mounted) {
-      //     showDialog(
-      //       context: context,
-      //       builder: (context) => AlertDialog(
-      //         title: const Text('Outside of Misurata'),
-      //         content: const Text(
-      //             'The Misurata Map app can only be used within the boundaries of Misurata. Please move to Misurata to use the app.'),
-      //         actions: [
-      //           TextButton(
-      //             onPressed: () => Navigator.pop(context),
-      //             child: const Text('OK'),
-      //           ),
-      //         ],
-      //       ),
-      //     );
-      //   }
-      // }
+ 

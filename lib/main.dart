@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'ui/check/auth_page.dart';
+import 'package:astro44/ui/check/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'data/auth/servieces/firebase_options.dart';
+import 'package:astro44/data/auth/servieces/firebase_options.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:get/get.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,9 +31,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthCheck(),
+      home: const AuthCheck(),
     );
   }
 }

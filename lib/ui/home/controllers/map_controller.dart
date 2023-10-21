@@ -7,32 +7,25 @@ class MapController extends GetxController {
   ReportRepository reportRepository = ReportRepository();
 
   Rx<Status> status = Status.loading.obs;
-
   RxList<Map<String, dynamic>> report = <Map<String, dynamic>>[].obs;
-
   var error = ''.obs;
-
-
-
+  var isLoading = false.obs; // Add this line
 
   getMap() async {
-    try{
-    var respond = await reportRepository.getReports();
-
-    report.value = respond;
+    if (!isLoading.value) {
+      // Add this line
+      isLoading.value = true; // Add this line
+      try {
+        var respond = await reportRepository.getReports();
+        report.value = respond;
         status.value = Status.success;
-
+      } catch (e) {
+        error.value = e.toString();
+        status.value = Status.error;
+      }
+      isLoading.value = false; // Add this line
     }
-    catch(e){
-      error.value = e.toString();
-      status.value = Status.error;
-
-    }
-   
-
   }
-
-   
 }
 
 enum Status { loading, success, error }

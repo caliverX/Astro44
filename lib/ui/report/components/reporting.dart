@@ -82,16 +82,17 @@ class _ReportingPageState extends State<ReportingPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('success'),
-            content: Text('the report has been sent.'),
+            title: const Text('success'),
+            content: const Text('the report has been sent.'),
             actions: <Widget>[
               TextButton(
-                child: Text('ok'),
+                child: const Text('ok'),
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.push(
+                  Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => MasterPage()),
+                    MaterialPageRoute(builder: (context) => const MasterPage()),
+                    (Route<dynamic> route) => false,
                   );
                 },
               ),
@@ -150,11 +151,11 @@ class _ReportingPageState extends State<ReportingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reporting Page'),
+        title: const Text('Reporting Page'),
       ),
       body: Center(
         child: isUploading
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -167,7 +168,7 @@ class _ReportingPageState extends State<ReportingPage> {
                   ),
                   ElevatedButton(
                     onPressed: _saveImageToFirestore,
-                    child: Text('Save Picture'),
+                    child: const Text('Save Picture'),
                   ),
                 ],
               ),

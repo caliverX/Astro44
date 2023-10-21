@@ -10,7 +10,7 @@ class MasterPage extends StatefulWidget {
   static final List<Widget> _pages = <Widget>[
     HomePage(),
     const ReportPage(),
-    const NotificationPage(),
+     NotificationPage(),
     const SettingsPage(),
   ];
 
