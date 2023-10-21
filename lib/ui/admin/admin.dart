@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:get/get.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -60,7 +59,6 @@ class _AdminPageState extends State<AdminPage> {
       payload: 'notification',
     );
   }
-  
 
   Future<void> _approveReport(String userId, String reportId) async {
     // Get report document from 'potholes_report' subcollection
@@ -206,21 +204,21 @@ class _AdminPageState extends State<AdminPage> {
     final User? user = _auth.currentUser;
 
     if (user == null || user.email != 'el.rajoubi79@gmail.com') {
-      return Text('You are not authorized to view this page.');
+      return const Text('You are not authorized to view this page.');
     }
 
-     return ScaffoldMessenger(
+    return ScaffoldMessenger(
         key: _scaffoldMessengerKey,
         child: Scaffold(
             appBar: AppBar(
-              title: Text('Admin Page'),
+              title: const Text('Admin Page'),
               backgroundColor: Colors.blue,
             ),
             body: StreamBuilder<QuerySnapshot>(
               stream: _firestore.collectionGroup('potholes_report').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -246,7 +244,7 @@ class _AdminPageState extends State<AdminPage> {
                           AsyncSnapshot<DocumentSnapshot> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
@@ -258,7 +256,7 @@ class _AdminPageState extends State<AdminPage> {
                           String username = userData['username'];
 
                           if (fullName == null || username == null) {
-                            return Text(
+                            return const Text(
                                 'Error: User document or necessary fields not found.');
                           }
 
@@ -273,12 +271,12 @@ class _AdminPageState extends State<AdminPage> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text('Image'),
+                                      title: const Text('Image'),
                                       content: Image.network(
                                           reportData['image_url']),
                                       actions: [
                                         TextButton(
-                                          child: Text('OK'),
+                                          child: const Text('OK'),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
@@ -299,20 +297,20 @@ class _AdminPageState extends State<AdminPage> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: Icon(Icons.check),
+                                  icon: const Icon(Icons.check),
                                   onPressed: () {
                                     _approveReport(userId, reportId);
                                     _scaffoldMessengerKey.currentState
-                                        ?.showSnackBar(SnackBar(
+                                        ?.showSnackBar(const SnackBar(
                                             content: Text('Report approved')));
                                   },
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.delete),
+                                  icon: const Icon(Icons.delete),
                                   onPressed: () {
                                     _deleteReport(userId, reportId);
                                     _scaffoldMessengerKey.currentState
-                                        ?.showSnackBar(SnackBar(
+                                        ?.showSnackBar(const SnackBar(
                                             content: Text('Report deleted')));
                                   },
                                 ),

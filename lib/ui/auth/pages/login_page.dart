@@ -1,5 +1,4 @@
 // Import necessary packages.
-import 'package:astro44/data/auth/servieces/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -24,7 +24,6 @@ class _MapPageState extends State<MapPage> {
     for (var data in widget.markers) {
       final latitude = data['latitude'];
       final longitude = data['longitude'];
-      final status = data['status'];
       final description = data['description'];
       final imageUrl = data['image_url'];
       final marker = Marker(

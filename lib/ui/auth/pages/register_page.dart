@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:astro44/ui/shared_components/componets/my_textfield.dart';
 import 'package:astro44/ui/shared_components/componets/my_button.dart';
 import 'package:astro44/ui/shared_components/componets/square.dart';
-import 'package:astro44/data/auth/servieces/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 
