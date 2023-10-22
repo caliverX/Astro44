@@ -9,9 +9,9 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 class MasterPage extends StatefulWidget {
   static final List<Widget> _pages = <Widget>[
     HomePage(),
-    const ReportPage(),
-     NotificationPage(),
-    const SettingsPage(),
+     const ReportPage(),
+    const NotificationPage(),
+     SettingsPage(),
   ];
 
   final User? user;
@@ -35,18 +35,10 @@ class _MasterPageState extends State<MasterPage> {
           // Change the navigation bar color here
           ),
       child: Scaffold(
-        appBar: AppBar(
-        backgroundColor: Colors.grey[500],
-        actions: [
-          IconButton(onPressed: signUserOut, icon: const Icon(Icons.logout))
-        ],
-      ),
+       
         body: MasterPage._pages[_selectedIndex],
-        bottomNavigationBar:
-        
-         AnimatedBottomNavigationBar(
+        bottomNavigationBar: AnimatedBottomNavigationBar(
           icons: const [
-            
             Icons.home,
             Icons.add_circle_sharp,
             Icons.notifications,

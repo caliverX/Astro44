@@ -36,7 +36,7 @@ class _MapPageState extends State<MapPage> {
             builder: (context) {
               return SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: <Widget>[
                       Text(description),
@@ -56,7 +56,7 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GoogleMap(
+    return SafeArea(child:  GoogleMap(
       zoomControlsEnabled: false,
       initialCameraPosition: CameraPosition(
         target: _center,
@@ -65,6 +65,6 @@ class _MapPageState extends State<MapPage> {
       myLocationEnabled: true,
       myLocationButtonEnabled: true,
       markers: _markers,
-    );
+    ));
   }
 }

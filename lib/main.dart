@@ -31,9 +31,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AuthCheck(),
+      home: AuthCheck(),
     );
   }
 }
@@ -51,10 +51,10 @@ Future<void> _showNotification(String title, String body) async {
   );
   const NotificationDetails platformChannelSpecifics =
       NotificationDetails(android: androidPlatformChannelSpecifics);
-  final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  await _flutterLocalNotificationsPlugin.show(
+  await flutterLocalNotificationsPlugin.show(
     id++,
     title,
     body,

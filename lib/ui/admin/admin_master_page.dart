@@ -26,7 +26,7 @@ class _AdminMasterPageState extends State<AdminMasterPage> {
       body: Obx(() => AdminMasterPage._pages[controller.tabIndex.value]),
       bottomNavigationBar: Obx(() {
         return AnimatedBottomNavigationBar(
-          icons: [Icons.home, Icons.settings],
+          icons: const [Icons.home, Icons.settings],
           activeIndex: controller.tabIndex.value,
           gapLocation: GapLocation.none,
           notchSmoothness: NotchSmoothness.defaultEdge,

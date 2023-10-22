@@ -54,7 +54,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  var _fcm = FirebaseMessaging.instance;
+  final _fcm = FirebaseMessaging.instance;
 
   String? token = "";
 
@@ -83,11 +83,11 @@ class _RegisterPageState extends State<RegisterPage> {
           email: emailController.text.trim(),
           password: passwordController.text.trim(),
         )
-            .then((_userCredential) async {
-          print(_userCredential.user!.uid);
+            .then((userCredential) async {
+          print(userCredential.user!.uid);
                     print(_fcm.getToken());
 
-          firestore.collection('users').doc(_userCredential.user!.uid).set({
+          firestore.collection('users').doc(userCredential.user!.uid).set({
             'fcm': await _fcm.getToken()??"null",
             'username': usernameController.text,
             'fullname': fullnameController.text,
@@ -96,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
             'admin': false,
           });
 
-          return _userCredential;
+          return userCredential;
         });
 
         // Add the username and fullname to the UserCredential object

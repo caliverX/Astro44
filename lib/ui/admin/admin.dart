@@ -72,7 +72,7 @@ class _AdminPageState extends State<AdminPage> {
     // Check if report document exists and contains necessary fields
     if (!reportSnapshot.exists ||
         reportSnapshot.data() == null ||
-        !(reportSnapshot.data() is Map<String, dynamic>)) {
+        reportSnapshot.data() is! Map<String, dynamic>) {
       print('Error: Report document or necessary fields not found.');
       return;
     }
@@ -255,7 +255,7 @@ class _AdminPageState extends State<AdminPage> {
                           String fullName = userData['fullname'];
                           String username = userData['username'];
 
-                          if (fullName == null || username == null) {
+                          if (username == null) {
                             return const Text(
                                 'Error: User document or necessary fields not found.');
                           }

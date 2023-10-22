@@ -112,8 +112,8 @@ class _ReportingPageState extends State<ReportingPage> {
 
 // Define the new method
   Future<void> sendNotification(String subject, String title) async {
-    final postUrl = 'https://fcm.googleapis.com/fcm/send';
-    String toParams = "/topics/" + 'admin'; // Change 'yourTopicName' to 'admin'
+    const postUrl = 'https://fcm.googleapis.com/fcm/send';
+    String toParams = "/topics/" 'admin'; // Change 'yourTopicName' to 'admin'
 
     final data = {
       "notification": {"body": subject, "title": title},
@@ -125,7 +125,7 @@ class _ReportingPageState extends State<ReportingPage> {
         "sound": 'default',
         "screen": "admin",
       },
-      "to": "${toParams}"
+      "to": toParams
     };
 
     final headers = {
