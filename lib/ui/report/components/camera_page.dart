@@ -24,6 +24,7 @@ class _CameraPageState extends State<CameraPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Camera Page'),
+        backgroundColor: Colors.grey,
       ),
       body: Center(
         child: ElevatedButton(
@@ -40,6 +41,15 @@ class _CameraPageState extends State<CameraPage> {
             }
           },
           child: const Text('Take Picture'),
+          style: ElevatedButton.styleFrom(
+            primary: Colors.grey, // background color
+            onPrimary: Colors.white, // text color
+            elevation: 5, // button's elevation
+            shape: RoundedRectangleBorder(
+              // button's shape
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
       ),
     );

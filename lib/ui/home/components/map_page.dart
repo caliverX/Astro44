@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -22,41 +21,45 @@ class _MapPageState extends State<MapPage> {
 
   buildMarkers() {
     for (var data in widget.markers) {
-      final latitude = data['latitude'];
-      final longitude = data['longitude'];
-      final description = data['description'];
-      final imageUrl = data['image_url'];
-      final marker = Marker(
-        markerId: MarkerId(data['id']),
-        position: LatLng(latitude, longitude),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-        onTap: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) {
-              return SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
-                    children: <Widget>[
-                      Text(description),
-                      Image.network(imageUrl),
-                    ],
+      if (data['status'] == 'approved') {
+        // Add this line
+        final latitude = data['latitude'];
+        final longitude = data['longitude'];
+        final description = data['description'];
+        final imageUrl = data['image_url'];
+        final marker = Marker(
+          markerId: MarkerId(data['id']),
+          position: LatLng(latitude, longitude),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: <Widget>[
+                        Text(description),
+                        Image.network(imageUrl),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          );
-        },
-      );
+                );
+              },
+            );
+          },
+        );
 
-      _markers.add(marker);
+        _markers.add(marker);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child:  GoogleMap(
+    return SafeArea(
+        child: GoogleMap(
       zoomControlsEnabled: false,
       initialCameraPosition: CameraPosition(
         target: _center,

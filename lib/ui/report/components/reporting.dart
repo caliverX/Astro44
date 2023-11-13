@@ -151,6 +151,7 @@ class _ReportingPageState extends State<ReportingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.grey[500],
         title: const Text('Reporting Page'),
       ),
       body: Center(
@@ -165,11 +166,31 @@ class _ReportingPageState extends State<ReportingPage> {
                         description = value;
                       });
                     },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: 'Enter description',
+                      hintStyle: TextStyle(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Icon(Icons.description, color: Colors.grey),
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: _saveImageToFirestore,
                     child: const Text('Save Picture'),
-                  ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.grey, // background color
+                      onPrimary: Colors.white, // text color
+                      elevation: 5, // button's elevation
+                      shape: RoundedRectangleBorder(
+                        // button's shape
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  )
                 ],
               ),
       ),

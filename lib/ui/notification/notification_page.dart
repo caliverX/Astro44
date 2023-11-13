@@ -29,7 +29,7 @@ class NotificationPage extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF450075),
+                  Color.fromARGB(255, 51, 153, 201),
                   Color(0xFF002244),
                 ],
               ),

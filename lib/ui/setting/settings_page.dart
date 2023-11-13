@@ -17,7 +17,6 @@ class ProfielController extends GetxController {
   void onInit() {
     super.onInit();
     loadUserData();
-    signOut();
   }
 
   Future<void> loadUserData() async {
@@ -65,7 +64,9 @@ class SettingsPage extends StatelessWidget {
                       child: Icon(
                         Icons.person,
                         size: 50,
-                      ), // This is the user icon
+                      ),
+                      // This is the user icon
+                      backgroundColor: Colors.grey,
                     ),
                   ),
                   ListTile(
@@ -83,7 +84,16 @@ class SettingsPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () => profileController.signOut(),
                     child: const Text('Sign Out'),
-                  ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.grey, // background color
+                      onPrimary: Colors.white, // text color
+                      elevation: 5, // button's elevation
+                      shape: RoundedRectangleBorder(
+                        // button's shape
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

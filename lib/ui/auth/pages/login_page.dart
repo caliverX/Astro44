@@ -8,9 +8,6 @@ import 'package:astro44/ui/shared_components/componets/my_button.dart';
 import 'package:astro44/ui/shared_components/componets/square.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
-
-
 class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -19,7 +16,8 @@ class AuthService {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -28,13 +26,17 @@ class AuthService {
     );
 
     // Once signed in, return the UserCredential
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
 
     // Obtain the FCM token
     String? fcmToken = await FirebaseMessaging.instance.getToken();
 
     // Create a new document in Firestore with the user's information
-    FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.user!.uid)
+        .set({
       'username': userCredential.user!.displayName,
       'fullname': userCredential.user!.displayName,
       'fcm': fcmToken,
@@ -173,13 +175,19 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 25),
                 //logo
-                const Icon(
-                  Icons.lock,
-                  size: 100,
+
+                Container(
+                  width: 240,
+                  height: 240,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image:
+                            AssetImage('assets/images/business-1000x1000.png'),
+                        fit: BoxFit.fill),
+                  ),
                 ),
-                const SizedBox(height: 25),
+
                 //welcome back
                 Text(
                   "Welcome Back! We Missed You!",
@@ -222,13 +230,13 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 25),
+                const SizedBox(height: 30),
                 //sign in button
                 mybutton(
                   text: "Sign In",
                   onTap: signInUser,
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
 
                 //or continue with
                 Padding(
