@@ -1,6 +1,7 @@
 import 'package:astro44/ui/shared_components/componets/square.dart';
 import 'package:astro44/ui/report/components/camera_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ReportPage extends StatefulWidget {
   const ReportPage({super.key});
@@ -16,13 +17,13 @@ class _ReportPageState extends State<ReportPage> {
       backgroundColor: Colors.grey[500],
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
-        title: const Text('Report Page'),
+        title:  Text('Report Page'.tr),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('select the issue that you want to report it !:',
+             Text('select the issue that you want to report it !:'.tr,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             Expanded(

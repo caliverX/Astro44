@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -82,11 +83,11 @@ class _ReportingPageState extends State<ReportingPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('success'),
-            content: const Text('the report has been sent.'),
+            title:  Text('success'.tr),
+            content:  Text('the report has been sent.'.tr),
             actions: <Widget>[
               TextButton(
-                child: const Text('ok'),
+                child:  Text('ok'.tr),
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pushAndRemoveUntil(
@@ -106,7 +107,7 @@ class _ReportingPageState extends State<ReportingPage> {
 
       // Call the new notification method here
       sendNotification(
-          'New Pothole Report', 'A new pothole report has been submitted');
+          'New Pothole Report'.tr, 'A new pothole report has been submitted'.tr);
     }
   }
 
@@ -152,7 +153,7 @@ class _ReportingPageState extends State<ReportingPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[500],
-        title: const Text('Reporting Page'),
+        title:  Text('Reporting Page'.tr),
       ),
       body: Center(
         child: isUploading
@@ -169,7 +170,7 @@ class _ReportingPageState extends State<ReportingPage> {
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: 'Enter description',
+                      hintText: 'Enter description'.tr,
                       hintStyle: TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -180,7 +181,7 @@ class _ReportingPageState extends State<ReportingPage> {
                   ),
                   ElevatedButton(
                     onPressed: _saveImageToFirestore,
-                    child: const Text('Save Picture'),
+                    child:  Text('Save Picture'.tr),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.grey, // background color
                       onPrimary: Colors.white, // text color

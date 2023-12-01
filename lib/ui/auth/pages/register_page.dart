@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:astro44/ui/shared_components/componets/my_textfield.dart';
 import 'package:astro44/ui/shared_components/componets/my_button.dart';
 import 'package:astro44/ui/shared_components/componets/square.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 
 class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -16,7 +16,8 @@ class AuthService {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -25,13 +26,17 @@ class AuthService {
     );
 
     // Once signed in, return the UserCredential
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
 
     // Obtain the FCM token
     String? fcmToken = await FirebaseMessaging.instance.getToken();
 
     // Create a new document in Firestore with the user's information
-    FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.user!.uid)
+        .set({
       'username': userCredential.user!.displayName,
       'fullname': userCredential.user!.displayName,
       'fcm': fcmToken,
@@ -39,10 +44,6 @@ class AuthService {
     });
   }
 }
-
-
-
-
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -58,7 +59,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String? token = "";
 
-
   late final firestore = FirebaseFirestore.instance;
   final usernameController = TextEditingController();
   final fullnameController = TextEditingController();
@@ -72,8 +72,6 @@ class _RegisterPageState extends State<RegisterPage> {
       isLoading = true;
     });
 
-  
-
     try {
       if (passwordController.text == confirmPasswordController.text) {
         // Create the user with email and password
@@ -85,10 +83,10 @@ class _RegisterPageState extends State<RegisterPage> {
         )
             .then((userCredential) async {
           print(userCredential.user!.uid);
-                    print(_fcm.getToken());
+          print(_fcm.getToken());
 
           firestore.collection('users').doc(userCredential.user!.uid).set({
-            'fcm': await _fcm.getToken()??"null",
+            'fcm': await _fcm.getToken() ?? "null",
             'username': usernameController.text,
             'fullname': fullnameController.text,
             'email': emailController.text,
@@ -114,16 +112,17 @@ class _RegisterPageState extends State<RegisterPage> {
           builder: (context) {
             return AlertDialog(
               backgroundColor: Colors.deepPurple,
-              title: const Center(
+              title: Center(
                 child: Text(
-                  'Registration Successful. Please check your email for verification.',
-                  style: TextStyle(color: Colors.white),
+                  'Registration Successful. Please check your email for verification.'
+                      .tr,
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
               actions: [
                 TextButton(
-                  child: const Text(
-                    'OK',
+                  child: Text(
+                    'OK'.tr,
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
@@ -136,21 +135,21 @@ class _RegisterPageState extends State<RegisterPage> {
           },
         );
       } else {
-        showErrorDialog("Passwords don't match!");
+        showErrorDialog("Passwords don't match!".tr);
       }
     } catch (e) {
       if (e is FirebaseAuthException) {
-        if (e.code == 'weak-password') {
-          showErrorDialog('The password provided is too weak.');
-        } else if (e.code == 'email-already-in-use') {
-          showErrorDialog('The account already exists for that email.');
-        } else if (e.code == 'username-in-use') {
-          showErrorDialog('The username already used.');
+        if (e.code == 'weak-password'.tr) {
+          showErrorDialog('The password provided is too weak.'.tr);
+        } else if (e.code == 'email-already-in-use'.tr) {
+          showErrorDialog('The account already exists for that email.'.tr);
+        } else if (e.code == 'username-in-use'.tr) {
+          showErrorDialog('The username already used.'.tr);
         } else {
-          showErrorDialog('An error occurred. Please try again later.');
+          showErrorDialog('An error occurred. Please try again later.'.tr);
         }
       } else {
-        showErrorDialog('An error occurred. Please try again later.');
+        showErrorDialog('An error occurred. Please try again later.'.tr);
       }
     } finally {
       if (mounted) {
@@ -177,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+                child: Text('OK'.tr),
               ),
             ],
           );
@@ -206,7 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10),
                 //creating account
                 Text(
-                  "let's create an account for you!",
+                  "let's create an account for you!".tr,
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -217,7 +216,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 //username
                 Mytextfield(
                   controller: usernameController,
-                  hintText: "username",
+                  hintText: "username".tr,
                   obscurText: false,
                 ),
                 const SizedBox(height: 10),
@@ -225,7 +224,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 //fullname
                 Mytextfield(
                   controller: fullnameController,
-                  hintText: "full name",
+                  hintText: "full name".tr,
                   obscurText: false,
                 ),
                 const SizedBox(height: 10),
@@ -233,7 +232,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 //email
                 Mytextfield(
                   controller: emailController,
-                  hintText: "email",
+                  hintText: "email".tr,
                   obscurText: false,
                 ),
                 const SizedBox(height: 10),
@@ -241,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 //password
                 Mytextfield(
                   controller: passwordController,
-                  hintText: "Password",
+                  hintText: "Password".tr,
                   obscurText: true,
                 ),
                 const SizedBox(height: 10),
@@ -249,14 +248,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 //conform password
                 Mytextfield(
                   controller: confirmPasswordController,
-                  hintText: "confirm Password",
+                  hintText: "confirm Password".tr,
                   obscurText: true,
                 ),
                 const SizedBox(height: 20),
 
                 //sign in button
                 mybutton(
-                  text: "Sign Up",
+                  text: "Sign Up".tr,
                   onTap: signUserUp,
                 ),
                 const SizedBox(height: 15),
@@ -275,7 +274,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          "Or continue with",
+                          "Or continue with".tr,
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
@@ -308,14 +307,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already Have An Account? ",
+                      "Already Have An Account? ".tr,
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
-                      child: const Text(
-                        "Login now",
+                      child: Text(
+                        "Login now".tr,
                         style: TextStyle(
                             color: Colors.blue, fontWeight: FontWeight.bold),
                       ),

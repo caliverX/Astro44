@@ -1,0 +1,82 @@
+import 'translation_keys.dart' as translation;
+
+class En {
+  Map<String, String> get messages => {
+        translation.title: 'Title',
+        translation.subtitle: 'This is the subtitle',
+        translation.withParam: 'Translation with param: hello @param',
+        'Report Page': 'Report Page',
+        'select the issue that you want to report it !:':
+            'select the issue that you want to report it !:',
+        'Camera Page': 'Camera Page',
+        'Take Picture': 'Take Picture',
+        'success': 'success',
+        'the report has been sent.': 'the report has been sent.',
+        'ok': 'ok',
+        'New Pothole Report': 'New Pothole Report',
+        'A new pothole report has been submitted':
+            'A new pothole report has been submitted',
+        'Reporting Page': 'Reporting Page',
+        'Enter description': 'Enter description',
+        'Save Picture': 'Save Picture',
+        'Fixed Potholes': 'Fixed Potholes',
+        'Unfixed Potholes': 'Unfixed Potholes',
+        'There is nothing to show here.': 'There is nothing to show here.',
+        'Settings Page': 'Settings Page',
+        'Username': 'Username',
+        'Full Name': 'Full Name',
+        'Email': 'Email',
+        'Sign Out': 'Sign Out',
+        'Switch to English': 'Switch to English',
+        "Verify Email": "Verify Email",
+        "A verfication email is sent": "A verfication email is sent",
+        "Resent Email": "Resent Email",
+        "cancell": "cancell",
+        'Password Reset Email Sent': 'Password Reset Email Sent',
+        "Welcome Back! We Missed You!": "Welcome Back! We Missed You!",
+        "email": "email",
+        "Password": "Password",
+        "Forgot Password?": "Forgot Password?",
+        "Sign In": "Sign In",
+        "Or continue with": "Or continue with",
+        "Not a member? ": "Not a member? ",
+        "Register now": "Register now",
+        'Registration Successful. Please check your email for verification.':
+            'Registration Successful. Please check your email for verification.',
+        'OK': 'OK',
+        "Passwords don't match!": "Passwords don't match!",
+        'weak-password': 'weak-password',
+        'The password provided is too weak.':
+            'The password provided is too weak.',
+        'email-already-in-use': 'email-already-in-use',
+        'The account already exists for that email.':
+            'The account already exists for that email.',
+        'username-in-use': 'username-in-use',
+        'The username already used.': 'The username already used.',
+        'An error occurred. Please try again later.':
+            'An error occurred. Please try again later.',
+        "let's create an account for you!": "let's create an account for you!",
+        "username": "username",
+        "full name": "full name",
+        "confirm Password": "confirm Password",
+        "Sign Up": "Sign Up",
+        "Already Have An Account? ": "Already Have An Account? ",
+        "Login now": "Login now",
+        'Report Approved': 'Report Approved',
+        'Your report has been approved by .':
+            'Your report has been approved by .',
+        'Report Refused': 'Report Refused',
+        'Your report has been refused.': 'Your report has been refused.',
+        'Admin Page': 'Admin Page',
+        'Error: User document or necessary fields not found.':
+            'Error: User document or necessary fields not found.',
+        'Image': 'Image',
+        'Report approved': 'Report approved',
+        'Report deleted': 'Report deleted',
+        "Admin Settings": "Admin Settings",
+        'User Report': 'User Report',
+        'Report is Fixed': 'Report is Fixed',
+        'Your report has been fixed by the government':'Your report has been fixed by the government',
+         
+      };
+}

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get/get.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -98,8 +99,8 @@ class _AdminPageState extends State<AdminPage> {
           (userSnapshot.data() as Map<String, dynamic>)['username'] ?? '';
 
       // Send notification to user
-      await _showNotification('Report Approved',
-          'Your report has been approved by $fullname (@$username).');
+      await _showNotification('Report Approved'.tr,
+          'Your report has been approved by $fullname (@$username).'.tr);
 
       // Send notification to user in Firestore
       await _firestore
@@ -144,8 +145,8 @@ class _AdminPageState extends State<AdminPage> {
       String username =
           (userSnapshot.data() as Map<String, dynamic>)['username'] ?? '';
 
-      await _showNotification('Report Refused',
-          'Your report has been refused. $fullname (@$username).');
+      await _showNotification('Report Refused'.tr,
+          'Your report has been refused. $fullname (@$username).'.tr);
       await _firestore
           .collection('users')
           .doc(userId)
@@ -211,7 +212,7 @@ class _AdminPageState extends State<AdminPage> {
         key: _scaffoldMessengerKey,
         child: Scaffold(
             appBar: AppBar(
-              title: const Text('Admin Page'),
+              title: Text('Admin Page'.tr),
               backgroundColor: Colors.blue,
             ),
             body: StreamBuilder<QuerySnapshot>(
@@ -256,8 +257,9 @@ class _AdminPageState extends State<AdminPage> {
                           String username = userData['username'];
 
                           if (username == null) {
-                            return const Text(
-                                'Error: User document or necessary fields not found.');
+                            return Text(
+                                'Error: User document or necessary fields not found.'
+                                    .tr);
                           }
 
                           return ListTile(
@@ -271,12 +273,12 @@ class _AdminPageState extends State<AdminPage> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: const Text('Image'),
+                                      title: Text('Image'.tr),
                                       content: Image.network(
                                           reportData['image_url']),
                                       actions: [
                                         TextButton(
-                                          child: const Text('OK'),
+                                          child: Text('OK'.tr),
                                           onPressed: () {
                                             Navigator.of(context).pop();
                                           },
@@ -301,8 +303,9 @@ class _AdminPageState extends State<AdminPage> {
                                   onPressed: () {
                                     _approveReport(userId, reportId);
                                     _scaffoldMessengerKey.currentState
-                                        ?.showSnackBar(const SnackBar(
-                                            content: Text('Report approved')));
+                                        ?.showSnackBar(SnackBar(
+                                            content:
+                                                Text('Report approved'.tr)));
                                   },
                                 ),
                                 IconButton(
@@ -310,8 +313,9 @@ class _AdminPageState extends State<AdminPage> {
                                   onPressed: () {
                                     _deleteReport(userId, reportId);
                                     _scaffoldMessengerKey.currentState
-                                        ?.showSnackBar(const SnackBar(
-                                            content: Text('Report deleted')));
+                                        ?.showSnackBar(SnackBar(
+                                            content:
+                                                Text('Report deleted'.tr)));
                                   },
                                 ),
                               ],

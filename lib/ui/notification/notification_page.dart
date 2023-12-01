@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -28,10 +29,7 @@ class NotificationPage extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [
-                  Color.fromARGB(255, 51, 153, 201),
-                  Color(0xFF002244),
-                ],
+                 colors: [Colors.grey,Colors.grey],
               ),
             ),
             child: Padding(
@@ -39,9 +37,9 @@ class NotificationPage extends StatelessWidget {
               child: ListView(
                 children: [
                   // Fixed notifications
-                  const Text(
-                    'Fixed Potholes',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                   Text(
+                    'Fixed Potholes'.tr,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   ...fixedNotifications
                       .map((doc) => Card(
@@ -90,8 +88,8 @@ class NotificationPage extends StatelessWidget {
                       .expand((card) => [card, const Divider()])
                       .toList(),
                   // Unfixed notifications
-                  const Text(
-                    'Unfixed Potholes',
+                   Text(
+                    'Unfixed Potholes'.tr,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   ...unfixedNotifications
@@ -165,10 +163,10 @@ class NotificationPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(15.0),
           ),
           elevation: 5,
-          child: const Padding(
-            padding: EdgeInsets.all(15.0),
+          child:  Padding(
+            padding: const EdgeInsets.all(15.0),
             child: Text(
-              'There is nothing to show here.',
+              'There is nothing to show here.'.tr  ,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),

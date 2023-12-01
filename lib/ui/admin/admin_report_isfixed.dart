@@ -50,7 +50,7 @@ class AdminReportisFixedController extends GetxController {
         .doc(notificationId)
         .update({
       'isfixed': true,
-      'message': 'Your report has been fixed by the government'
+      'message': 'Your report has been fixed by the government'.tr
     });
   }
 }
@@ -65,9 +65,9 @@ class AdminReportisFixed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(body: Obx(() {
       if (controller.filteredDocuments.isEmpty) {
-        return const Center(
+        return Center(
           child: Text(
-            'There is nothing to show here.',
+            'There is nothing to show here.'.tr,
             style: TextStyle(
               fontSize: 24,
               color: Colors.grey,
@@ -80,10 +80,7 @@ class AdminReportisFixed extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF450075),
-              Color(0xFF002244),
-            ],
+            colors: [Colors.grey,Colors.grey],
           ),
         ),
         child: Padding(
@@ -114,8 +111,8 @@ class AdminReportisFixed extends StatelessWidget {
                           final userId = doc.reference.parent.parent!.id;
                           final notificationId = doc.id;
                           controller._updateIsFixed(userId, notificationId);
-                          controller._showNotification('Report Approved',
-                              'Your report has been fixed by goverment .');
+                          controller._showNotification('Report Approved'.tr,
+                              'Your report has been fixed by goverment .'.tr);
                         },
                       ),
                       onTap: () {

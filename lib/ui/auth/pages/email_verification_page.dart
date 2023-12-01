@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:astro44/ui/home/pages/home_page.dart';
 import 'package:astro44/ui/check/auth_page.dart';
+import 'package:get/get.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
@@ -111,7 +112,7 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
           appBar: AppBar(
             backgroundColor: Colors.grey[300],
             title: Text(
-              "Verify Email",
+              "Verify Email".tr,
               style: TextStyle(color: Colors.grey[700]),
             ),
           ),
@@ -120,8 +121,8 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "A verfication email is sent",
+                 Text(
+                  "A verfication email is sent".tr,
                   style: TextStyle(fontSize: 20),
                   textAlign: TextAlign.center,
                 ),
@@ -133,8 +134,8 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                     minimumSize: const Size.fromHeight(50),
                   ),
                   icon: const Icon(Icons.email, size: 32),
-                  label: const Text(
-                    "Resent Email",
+                  label:  Text(
+                    "Resent Email".tr,
                     style: TextStyle(fontSize: 24),
                   ),
                   onPressed: canResendEmail ? _sendVerificationEmail : null,
@@ -146,8 +147,8 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
                   ),
-                  child: const Text(
-                    "cancell",
+                  child:  Text(
+                    "cancell".tr,
                     style: TextStyle(fontSize: 24),
                   ),
                   onPressed: () => FirebaseAuth.instance.signOut(),

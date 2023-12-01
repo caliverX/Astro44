@@ -1,5 +1,6 @@
 import 'package:astro44/ui/report/components/reporting.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CameraPage extends StatefulWidget {
@@ -23,7 +24,7 @@ class _CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Camera Page'),
+        title:  Text('Camera Page'.tr),
         backgroundColor: Colors.grey,
       ),
       body: Center(
@@ -40,7 +41,7 @@ class _CameraPageState extends State<CameraPage> {
               );
             }
           },
-          child: const Text('Take Picture'),
+          child:  Text('Take Picture'.tr),
           style: ElevatedButton.styleFrom(
             primary: Colors.grey, // background color
             onPrimary: Colors.white, // text color

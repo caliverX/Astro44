@@ -55,6 +55,7 @@ dependencies:
   get: ^4.6.6
   intl: ^0.18.1
   package_info_plus: ^4.2.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

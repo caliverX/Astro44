@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:astro44/ui/shared_components/componets/my_textfield.dart';
 import 'package:astro44/ui/shared_components/componets/my_button.dart';
 import 'package:astro44/ui/shared_components/componets/square.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
@@ -108,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+              child: Text('OK'.tr),
             ),
           ],
         );
@@ -151,11 +152,11 @@ class _LoginPageState extends State<LoginPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return const AlertDialog(
+        return AlertDialog(
           backgroundColor: Colors.deepPurple,
           title: Center(
             child: Text(
-              'Password Reset Email Sent',
+              'Password Reset Email Sent'.tr,
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -190,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 //welcome back
                 Text(
-                  "Welcome Back! We Missed You!",
+                  "Welcome Back! We Missed You!".tr,
                   style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 16,
@@ -201,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                 //email
                 Mytextfield(
                   controller: emailController,
-                  hintText: "email",
+                  hintText: "email".tr,
                   obscurText: false,
                 ),
                 const SizedBox(height: 10),
@@ -209,7 +210,7 @@ class _LoginPageState extends State<LoginPage> {
                 //password
                 Mytextfield(
                   controller: passwordController,
-                  hintText: "Password",
+                  hintText: "Password".tr,
                   obscurText: true,
                 ),
                 const SizedBox(height: 10),
@@ -223,7 +224,7 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: resetPassword,
                         child: Text(
-                          "Forgot Password?",
+                          "Forgot Password?".tr,
                           style: TextStyle(color: Colors.grey[600]),
                         ),
                       ),
@@ -233,7 +234,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 30),
                 //sign in button
                 mybutton(
-                  text: "Sign In",
+                  text: "Sign In".tr,
                   onTap: signInUser,
                 ),
                 const SizedBox(height: 25),
@@ -252,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          "Or continue with",
+                          "Or continue with".tr,
                           style: TextStyle(color: Colors.grey[700]),
                         ),
                       ),
@@ -285,14 +286,14 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Not a member? ",
+                      "Not a member? ".tr,
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
-                      child: const Text(
-                        "Register now",
+                      child: Text(
+                        "Register now".tr,
                         style: TextStyle(
                             color: Colors.blue, fontWeight: FontWeight.bold),
                       ),
