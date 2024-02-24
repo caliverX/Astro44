@@ -5,7 +5,7 @@
         <uses-feature android:name="android.hardware.camera" />
 
     <application
-        android:label="Salamti"
+        android:label="Salamtik"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">

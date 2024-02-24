@@ -1,10 +1,10 @@
 import 'package:astro44/ui/admin/admin.dart';
+import 'package:astro44/ui/admin/admin_analyse_route.dart';
 import 'package:astro44/ui/admin/admin_report_isfixed.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:astro44/ui/admin/admin_settings.dart' show ProfielController;
-
 
 class ProfielController extends GetxController {
   var currentLocale = Locale('en', 'US').obs;
@@ -38,7 +38,6 @@ Future<void> signOut() async {
 class _AdminSettingsState extends State<AdminSettings> {
   ProfielController profileController = Get.put(ProfielController());
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,6 +59,12 @@ class _AdminSettingsState extends State<AdminSettings> {
                 title: Text('Report is Fixed'.tr),
                 onTap: () {
                   Get.to(() => AdminReportisFixed());
+                },
+              ),
+              ListTile(
+                title: Text('Analysing the reports'.tr),
+                onTap: () {
+                  Get.to(() => AdminAnalyseRoute());
                 },
               ),
               ListTile(

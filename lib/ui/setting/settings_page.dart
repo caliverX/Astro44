@@ -88,18 +88,14 @@ class _SettingsPageState extends State<SettingsPage> {
                         backgroundColor: Colors.grey,
                       ),
                     ),
-                    ListTile(
-                      title: Text('Username'.tr),
-                      subtitle: Text(controller.username.value),
-                    ),
-                    ListTile(
-                      title: Text('Full Name'.tr),
-                      subtitle: Text(controller.fullname.value),
-                    ),
-                    ListTile(
-                      title: Text('Email'.tr),
-                      subtitle: Text(controller.email.value),
-                    ),
+                    Obx(() => ListTile(
+                          title: Text('Username'.tr),
+                          subtitle: Text(controller.username.value),
+                        )),
+                    Obx(() => ListTile(
+                          title: Text('Full Name'.tr),
+                          subtitle: Text(controller.fullname.value),
+                        )),
                     ElevatedButton(
                       onPressed: () => profileController.signOut(),
                       child: Text('Sign Out'.tr),
@@ -123,7 +119,6 @@ class _SettingsPageState extends State<SettingsPage> {
                             ? 'Switch to English'.tr
                             : 'Switch to Arabic'.tr);
                       }),
-
                       style: ElevatedButton.styleFrom(
                         primary: Colors.grey, // background color
                         onPrimary: Colors.white, // text color

@@ -1,9 +1,13 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -41,6 +45,13 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   Future<void> _showNotification(String title, String body) async {
+    // Define the vibration pattern
+    final vibrationPattern = Int64List(4);
+    vibrationPattern[0] = 0; // Start immediately
+    vibrationPattern[1] = 100; // Vibrate for  100 milliseconds
+    vibrationPattern[2] = 1000; // Wait for  1 second
+    vibrationPattern[3] = 500; // Vibrate for  500 milliseconds
+
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'channel_id',
@@ -48,7 +59,9 @@ class _AdminPageState extends State<AdminPage> {
       importance: Importance.max,
       priority: Priority.high,
       icon: "@mipmap/ic_launcher",
+      enableVibration: true, // Enable vibration
     );
+
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
@@ -59,6 +72,48 @@ class _AdminPageState extends State<AdminPage> {
       platformChannelSpecifics,
       payload: 'notification',
     );
+  }
+
+  Future<void> sendNotificationToUser(
+      String userToken, String title, String body) async {
+    // Construct the notification payload
+    final data = {
+      "notification": {
+        "title": title,
+        "body": body,
+      },
+      "priority": "high",
+      "data": {
+        "click_action": "FLUTTER_NOTIFICATION_CLICK",
+        "id": "1",
+        "status": "done",
+        "sound": 'default',
+        "screen": "admin",
+      },
+      "to": userToken, // Send the notification to the user's FCM token
+    };
+
+    // Prepare the request headers
+    final headers = {
+      'content-type': 'application/json',
+      'Authorization':
+          'key=AAAAGtuQ8Q0:APA91bHTnUy4ifPviejyRt18FgeLdBJ_k7GIu40gegveSF0qIHVMZVfw5_-7YFduyEaJwPIqzZKaoOLUbvzZqOr-sEfVcrlCkA4DDue-ha8SMz34GzQ24saUoHLCJrbe51s04pBdrQvR', // Your Firebase Cloud Messaging key
+    };
+
+    // Send the notification
+    final response = await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      body: json.encode(data),
+      headers: headers,
+    );
+
+    if (response.statusCode == 200) {
+      // On success
+      print("Notification sent successfully");
+    } else {
+      // On failure
+      print("Failed to send notification");
+    }
   }
 
   Future<void> _approveReport(String userId, String reportId) async {
@@ -82,7 +137,10 @@ class _AdminPageState extends State<AdminPage> {
         reportSnapshot.data() as Map<String, dynamic>;
 
     // Update status of report
-    await reportSnapshot.reference.update({'status': 'approved'});
+    await reportSnapshot.reference.update({
+      'status': 'approved',
+      'approval_date': FieldValue.serverTimestamp(), // Add this line
+    });
 
     // Get user document from users collection
     DocumentSnapshot userSnapshot =
@@ -92,15 +150,25 @@ class _AdminPageState extends State<AdminPage> {
     if (userSnapshot.exists &&
         userSnapshot.data() != null &&
         userSnapshot.data() is Map<String, dynamic>) {
+      // Retrieve the user's FCM token from Firestore
+      String? userToken = userSnapshot.get(
+          'fcm'); // Assuming 'fcm_token' is the field name for the FCM token
+
+      if (userToken == null) {
+        print("User FCM token not found");
+        return;
+      }
+
       // Get fullname and username from user document
       String fullname =
           (userSnapshot.data() as Map<String, dynamic>)['fullname'] ?? '';
       String username =
           (userSnapshot.data() as Map<String, dynamic>)['username'] ?? '';
 
-      // Send notification to user
-      await _showNotification('Report Approved'.tr,
-          'Your report has been approved by $fullname (@$username).'.tr);
+      // Send notification to user using the userToken
+      // Note: You'll need to implement the actual notification sending logic here
+      await sendNotificationToUser(
+          userToken, 'Report Approved'.tr, 'Your report has been approved.'.tr);
 
       // Send notification to user in Firestore
       await _firestore
@@ -110,7 +178,7 @@ class _AdminPageState extends State<AdminPage> {
           .add({
         'reportId': reportId,
         'type': 'approve',
-        'message': 'Your report has been approved.',
+        'message': 'Your report has been approved.'.tr,
         'image_url':
             reportData['image_url'], // add image_url to notification data
         'description':
@@ -139,6 +207,17 @@ class _AdminPageState extends State<AdminPage> {
     if (userSnapshot.exists &&
         userSnapshot.data() != null &&
         userSnapshot.data() is Map<String, dynamic>) {
+      // Retrieve the user's FCM token
+      String? userToken = userSnapshot.get('fcm');
+
+      if (userToken != null) {
+        // Send notification to user using the userToken
+        await sendNotificationToUser(
+            userToken, 'Report Refused'.tr, 'Your report has been refused.'.tr);
+      } else {
+        print("User FCM token not found");
+      }
+
       // Get fullname and username from user document
       String fullname =
           (userSnapshot.data() as Map<String, dynamic>)['fullname'] ?? '';
@@ -154,7 +233,7 @@ class _AdminPageState extends State<AdminPage> {
           .add({
         'reportId': reportId,
         'type': 'delete',
-        'message': 'Your report has been delete it.',
+        'message': 'Your report has been delete it.'.tr,
         'timestamp': FieldValue.serverTimestamp(),
         'isfixed': true,
       });

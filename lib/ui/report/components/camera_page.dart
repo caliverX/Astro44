@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CameraPage extends StatefulWidget {
-  const CameraPage({Key? key}) : super(key: key);
+  final String type; // Add this line
+  const CameraPage({Key? key, required this.type}) : super(key: key); // Update this line
 
-  @override
-  _CameraPageState createState() => _CameraPageState();
+
+ @override
+ _CameraPageState createState() => _CameraPageState();
 }
 
 class _CameraPageState extends State<CameraPage> {
@@ -24,7 +26,7 @@ class _CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Camera Page'.tr),
+        title: Text('Camera Page'.tr),
         backgroundColor: Colors.grey,
       ),
       body: Center(
@@ -36,12 +38,14 @@ class _CameraPageState extends State<CameraPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ReportingPage(imagePath: photo.path),
+                  builder: (context) => ReportingPage(
+                      imagePath: photo.path,
+                      type: widget.type), // Pass the type here
                 ),
               );
             }
           },
-          child:  Text('Take Picture'.tr),
+          child: Text('Take Picture'.tr),
           style: ElevatedButton.styleFrom(
             primary: Colors.grey, // background color
             onPrimary: Colors.white, // text color

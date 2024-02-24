@@ -76,7 +76,28 @@ class En {
         "Admin Settings": "Admin Settings",
         'User Report': 'User Report',
         'Report is Fixed': 'Report is Fixed',
-        'Your report has been fixed by the government':'Your report has been fixed by the government',
-         
+        'Your report has been fixed by the government':
+            'Your report has been fixed by the government',
+        'Analysing the reports': 'Analysing the reports',
+        "Admin Analyse": "Admin Analyse",
+        'Analyse by Date and type and Street':
+            'Analyse by Date and type and Street',
+        'Average Fix Time Analysis': 'Average Fix Time Analysis',
+        'All': 'All',
+        'Average Fix Time': 'Average Fix Time',
+        'Calculate Average Fix Time': 'Calculate Average Fix Time',
+        'Average Approval Time': 'Average Approval Time',
+        'Calculate Average Approval Time': 'Calculate Average Approval Time',
+        'Average Fix Time After Approval': 'Average Fix Time After Approval',
+        'Calculate Average Fix Time After Approval':
+            'Calculate Average Fix Time After Approval',
+        'Total Reports': 'Total Reports',
+        'Select Type and Street': 'Select Type and Street',
+        'Calculate Total Reports': 'Calculate Total Reports',
+        'Clear Filters': 'Clear Filters',
+        'Pothole': 'Pothole',
+        'Streetlight': 'Streetlight',
+        'Other Issues': 'Other Issues',
+        'Your report has been delete it.':'Your report has been delete it.'
       };
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -9,10 +11,23 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  late Timer _timer;
+
   @override
   void initState() {
-    buildMarkers();
     super.initState();
+    _timer = Timer.periodic(Duration(seconds: 2), (Timer t) {
+      setState(() {
+        _markers.clear();
+        buildMarkers();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   final LatLng _center = const LatLng(32.3754, 15.0925);
@@ -21,8 +36,7 @@ class _MapPageState extends State<MapPage> {
 
   buildMarkers() {
     for (var data in widget.markers) {
-      if (data['status'] == 'approved') {
-        // Add this line
+      if (data['status'] == 'approved' && data['isFixed'] == false) {
         final latitude = data['latitude'];
         final longitude = data['longitude'];
         final description = data['description'];

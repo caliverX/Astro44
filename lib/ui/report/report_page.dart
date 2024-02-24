@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ReportPage extends StatefulWidget {
-  const ReportPage({super.key});
+  const ReportPage({Key? key}) : super(key: key);
 
   @override
   _ReportPageState createState() => _ReportPageState();
@@ -17,57 +17,116 @@ class _ReportPageState extends State<ReportPage> {
       backgroundColor: Colors.grey[500],
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
-        title:  Text('Report Page'.tr),
+        title: Text('Report Page'.tr),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-             Text('select the issue that you want to report it !:'.tr,
+            Text('select the issue that you want to report it !:'.tr,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                padding: const EdgeInsets.all(10),
-                children: [
-                  Card(
-                    child: SquareTitle(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const CameraPage()));
-                      },
-                      imagePath: 'assets/images/download.png',
-                    ),
-                  ),
-                  Card(
-                    child: SquareTitle(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const CameraPage()));
-                      },
-                      imagePath:
-                          'assets/images/49-496403_streetlight-clipart-electric-post-electricity-png-download.png',
-                    ),
-                  ),
-                ],
+              child: GridView.builder(
+                shrinkWrap: true,
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                itemCount: 3, // Adjust based on your actual number of items
+                itemBuilder: (ctx, i) {
+                  switch (i) {
+                    case 0:
+                      return Column(
+                        children: [
+                          Card(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CameraPage(type: 'pothole')),
+                                );
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/images/download.png',
+                                      fit: BoxFit.cover),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Text('Pothole'.tr, style: TextStyle(fontSize: 14)),
+                        ],
+                      );
+                    case 1:
+                      return Column(
+                        children: [
+                          Card(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CameraPage(type: 'other')),
+                                );
+                              },
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Image.asset('assets/images/152529.png',
+                                      fit: BoxFit.cover),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Text('Other Issues'.tr,
+                              style: TextStyle(fontSize: 14)),
+                        ],
+                      );
+                    case 2:
+                      return Column(
+                        children: [
+                          Card(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CameraPage(type: 'streetlight')),
+                                );
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                      'assets/images/49-496403_streetlight-clipart-electric-post-electricity-png-download.png',
+                                      fit: BoxFit.cover),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Text('Streetlight'.tr,
+                              style: TextStyle(fontSize: 14)),
+                        ],
+                      );
+                    default:
+                      return Container();
+                  }
+                },
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 1.0,
+                  crossAxisSpacing: 0.0,
+                  mainAxisSpacing: 5,
+                  mainAxisExtent: 182, // Adjust based on your needs
+                ),
               ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your code here.
-        },
-        tooltip: 'Report an issue',
-        child: const Icon(Icons.report),
       ),
     );
   }

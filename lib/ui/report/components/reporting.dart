@@ -9,11 +9,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:geocoding/geocoding.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class ReportingPage extends StatefulWidget {
   final String imagePath;
+  final String type;
 
-  const ReportingPage({Key? key, required this.imagePath}) : super(key: key);
+  const ReportingPage({Key? key, required this.imagePath, required this.type})
+      : super(key: key);
 
   @override
   _ReportingPageState createState() => _ReportingPageState();
@@ -53,15 +57,43 @@ class _ReportingPageState extends State<ReportingPage> {
       double lat = position.latitude;
       double lon = position.longitude;
 
+      // Reverse geocoding
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
+      Placemark placemark = placemarks[0];
+      String street = placemark.street ?? '';
+      String city = placemark.locality ?? '';
+      String country = placemark.country ?? '';
+
+      String address = '$street, $city, $country';
+
       String userId = FirebaseAuth.instance.currentUser!.uid;
       CollectionReference users =
           FirebaseFirestore.instance.collection('users');
+      // Fetch the user's FCM token
+      DocumentSnapshot userSnapshot = await users.doc(userId).get();
+      String? userToken = userSnapshot.get('fcm');
+
+      if (userToken == null) {
+        print("User FCM token not found");
+        return null; // Consider handling this case appropriately
+      }
+
+      // Format the date
+
       users.doc(userId).collection('potholes_report').add({
         'image_url': downloadUrl,
         'latitude': lat,
         'longitude': lon,
+        'address': address,
         'description': description,
         'status': 'still not approved',
+        'isFixed': false,
+        'type': widget.type,
+        'reportdate': FieldValue
+            .serverTimestamp(), // Add the date to the Firestore document
+        'approval_date': '',
+        'fixedDate': '',
+        'fcm_token': userToken, // Include the FCM token in the report
       });
 
       return downloadUrl;
@@ -83,11 +115,11 @@ class _ReportingPageState extends State<ReportingPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title:  Text('success'.tr),
-            content:  Text('the report has been sent.'.tr),
+            title: Text('success'.tr),
+            content: Text('the report has been sent.'.tr),
             actions: <Widget>[
               TextButton(
-                child:  Text('ok'.tr),
+                child: Text('ok'.tr),
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.pushAndRemoveUntil(
@@ -106,8 +138,8 @@ class _ReportingPageState extends State<ReportingPage> {
       print(uui);
 
       // Call the new notification method here
-      sendNotification(
-          'New Pothole Report'.tr, 'A new pothole report has been submitted'.tr);
+      sendNotification('New Pothole Report'.tr,
+          'A new pothole report has been submitted'.tr);
     }
   }
 
@@ -153,7 +185,7 @@ class _ReportingPageState extends State<ReportingPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[500],
-        title:  Text('Reporting Page'.tr),
+        title: Text('Reporting Page'.tr),
       ),
       body: Center(
         child: isUploading
@@ -181,7 +213,7 @@ class _ReportingPageState extends State<ReportingPage> {
                   ),
                   ElevatedButton(
                     onPressed: _saveImageToFirestore,
-                    child:  Text('Save Picture'.tr),
+                    child: Text('Save Picture'.tr),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.grey, // background color
                       onPrimary: Colors.white, // text color

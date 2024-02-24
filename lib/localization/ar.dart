@@ -74,6 +74,25 @@ class Ar {
         'User Report': " بلاغ المستخدم",
         'Report is Fixed': "البلاغات التي تم تصليحها",
         'Your report has been fixed by the government':" تم تصليح بلاغك من قبل الحكومة",
-        
+        'Analysing the reports' : "تحليل البلاغات",
+        "Admin Analyse":"تحليل",
+        'Analyse by Date and type and Street': "تحليل عن الطريق التاريخ و النوع و الشارع",
+        'Average Fix Time Analysis':"تحليل متوسط وقت التصليح",
+        'All':"الكل",
+        'Average Fix Time':" متوسط وقت التصليح",
+        'Calculate Average Fix Time':" حساب متوسط وقت التصليح",
+        'Average Approval Time':" متوسط وقت الموافقة",
+        'Calculate Average Approval Time':" حساب متوسط وقت الموافقة",
+        'Average Fix Time After Approval':" متوسط وقت التصليح بعد الموافقة",
+        'Calculate Average Fix Time After Approval':" حساب متوسط وقت التصليح بعد الموافقة",
+         
+         'Total Reports':' إجمالي البلاغات',
+         'Select Type and Street':" اختر النوع و الشارع",
+         'Calculate Total Reports':" حساب إجمالي البلاغات",
+         'Clear Filters':" مسح الفلترات",
+         'Other Issues':" مشاكل أخرى",
+         'Streetlight':" مشاكل إنارة",
+         'Pothole':" حفرة",
+         'Your report has been delete it.':"بلاغك تم حذفه",
       };
 }
